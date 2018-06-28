@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <script src="../lib/p5.dom.js" charset="utf-8"></script>
+    <script src="../lib/p5.sound.js" charset="utf-8"></script>
+    <title>Sequence</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+function setup() {
+  createCanvas(1080,1920)
+}
+function arcFromTo(x1,x2,scale) {
+  var rad = abs(x1-x2)
+  var x = x1>x2?x2+rad/2:x1+rad/2
+  noFill()
+  var s = abs(x1-x2)%2==1?0:PI
+  arc(x*scale,300,rad*scale,rad*scale,s,s+PI)
+}
+function make(n) {
+  var num=[0]
+  for (var i = 1; i < n; i++) {
+    var curnum=num[num.length-1]-i>0 && num.indexOf(num[num.length-1]-i)==-1?num[num.length-1]-i:num[num.length-1]+i
+    var start=curnum%2==0?0:PI
+    fill(0)
+    num.push(curnum)
+  }
+  for (var i = 1; i < num.length; i++) {
+    arcFromTo(num[i-1],num[i],0.1)
+  }
+}
+count=0
+function draw(){
+  background(255)
+  make(count)
+  count++
+  frameRate(100)
+}
+
+    </script>
+  </body>
+</html>
