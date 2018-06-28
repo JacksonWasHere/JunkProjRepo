@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sound test</title>
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <script src="../lib/p5.sound.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+function square(x,y){
+  this.osc = new p5.Oscillator();
+  this.osc.setType('sine');
+  this.osc.freq(map(x,0,8,60,200)*(x+1));
+  this.osc.amp(0);
+  this.osc.start();
+  this.x=x
+  this.y=y
+  this.amp=0.3
+  this.activated=false
+  this.playing=false
+  this.draw=function(){
+    fill(this.activated?100:200)
+    rect(this.x*66.66666+8.333,this.y*66.66666+8.333,50,50)
+    if (this.playing) {
+      this.osc.amp(this.amp)
+    } else {
+      this.osc.amp(0)
+    }
+  }
+}
+
+var osc=[]
+function setup() {
+  createCanvas(400,400)
+  background(255)
+  for (var i = 0; i < 6; i++) {
+    osc[i]=[]
+    for (var j = 0; j < 6; j++) {
+      osc[i][j]=new square(i,j)
+      osc[i][j].draw()
+    }
+  }
+}
+var k=0
+function draw(){
+  frameRate(4)
+  for (var i = 0; i < 6; i++) {
+    for (var j = 0; j < 6; j++) {
+      osc[i][j].draw()
+      osc[i][k%6-1==-1?5:k%6-1].playing=false
+      osc[i][k%6].playing=osc[i][k%6].activated
+      // if(k%6==j){
+      //   osc[i][j].playing=osc[i][j].activated
+      //   if(k%6!=0){
+      //     osc[i][j-1].playing=false
+      //   } else if(i==0){
+      //     osc[i][5].playing=false
+      //   }
+      // }
+    }
+  }
+  k++
+}
+function mousePressed() {
+  osc[floor(map(mouseX,0,400,0,6))][floor(map(mouseY,0,400,0,6))].activated=!osc[floor(map(mouseX,0,400,0,6))][floor(map(mouseY,0,400,0,6))].activated
+}
+
+    </script>
+  </body>
+</html>

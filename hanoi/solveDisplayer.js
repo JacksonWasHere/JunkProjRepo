@@ -10,7 +10,7 @@ function setup(){
     tower.push([])
     if(i==0){
       for (var j = tSize; j > 0; j--) {
-        tower[i].push(j)
+        tower[i].push(new disk(j,150+150*j,height-j*10-5))
       }
     }
   }
@@ -22,11 +22,13 @@ function draw(){
   frameRate(100)
   drawTower()
   move(solveArr[k])
-  k++
+  if(k<solveArr.length){
+    k++
+  }
 }
 function move(move){
-  var value = tower[move[0]].pop()
-  tower[move[1]].push(value)
+  var disk = tower[move[0]].pop()
+  tower[move[1]].push(disk)
 }
 function drawTower(){
   rectMode(CENTER)
@@ -36,9 +38,9 @@ function drawTower(){
   rect(450,300,20,200)
   for (var i = 0; i < tower.length; i++) {
     for (var j = 0; j < tower[i].length; j++) {
-      tower[i][j]
       fill(160, 123, 70)
-      rect(150+150*i,height-j*10-5,tower[i][j]*5+10,10)
+      var disk=tower[i][j].value
+      rect(150+150*i,height-j*10-5,disk*5+10,10)
     }
   }
 }
