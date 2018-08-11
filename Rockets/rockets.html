@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <script src="../lib/p5.dom.js" charset="utf-8"></script>
+    <script src="rocket.js" charset="utf-8"></script>
+    <script src="population.js" charset="utf-8"></script>
+    <script src="obstacle.js" charset="utf-8"></script>
+    <script src="DNA.js" charset="utf-8"></script>
+    <title>Rockets</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+var lifeP
+var genP
+var bestP
+var averageP
+var genButton
+var genButton_10
+
+var best_data = []
+var average_data = []
+
+var generation = 0
+var lifespan = 200
+var count = 0
+var target
+var mutation = 0.001
+
+var population
+
+function setup() {
+  createCanvas(800,600)
+  target = createVector(width-width/8,20)
+  lifeP = createP()
+  genP = createP()
+  bestP = createP()
+  averageP = createP()
+  genButton = createButton("Run Gen")
+  genButton.mousePressed(runGen)
+  genButton_10 = createButton("Run 10xGen")
+  genButton_10.mousePressed(runGen10)
+  population = new Population()
+  population.obstacles = [new Obstacle(-10,-10,width+20,10),new Obstacle(-10,height+10,width+20,10),new Obstacle(width,0,10,height),new Obstacle(-10,0,10,height),
+     new Obstacle(220,250,150,350)
+   ]
+
+}
+
+function draw() {
+  background(0)
+  population.update()
+  lifeP.html("Current step:"+count)
+  genP.html("Generation: "+generation)
+  count++
+
+  if (count == lifespan) {
+    count = 0
+    population.nextGen()
+    population.selection()
+    generation++
+  }
+
+  ellipse(target.x,target.y,16,16)
+}
+function runGen() {
+  while (count < lifespan) {
+    count++
+    population.update2()
+  }
+  count = 0
+  population.nextGen()
+  population.selection()
+  generation++
+}
+function runGen10() {
+  for (var i = 0; i < 10; i++) {
+    runGen()
+  }
+}
+
+    </script>
+  </body>
+</html>

@@ -16,4 +16,7 @@ function solver(){
     this.moves.push([s,f])
     this.solve(size-1,e,f,s)
   }
+  this.animate=function(x,y,x1,y1){
+
+  }
 }

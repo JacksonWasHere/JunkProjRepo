@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+function setup() {
+  createCanvas(400,400)
+  colorMode(HSB,400)
+  noStroke()
+}
+function draw() {
+  for (var x = 0; x < width; x++) {
+    for (var y = 0; y < height; y++) {
+      fill(equation(x,y))
+      rect(x,y,1,1)
+    }
+  }
+}
+function equation(x,y){
+  var hue = dist(x,y,mouseX,mouseY)
+  return color(hue,400,400)
+}
+
+    </script>
+  </body>
+</html>

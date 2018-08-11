@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sound Graph</title>
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <script src="../lib/p5.dom.js" charset="utf-8"></script>
+    <script src="../lib/p5.sound.js" charset="utf-8"></script>
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+    var song;
+    var amp;
+    var button;
+
+    var volhistory = []
+
+    function setup() {
+      createCanvas(500, 300);
+      // song.play();
+      mic = new p5.AudioIn();
+      mic.start()
+      fft = new p5.FFT();
+      fft.setInput(mic);
+      // amp = new p5.Amplitude();
+    }
+    var previous = [0,0]
+    var col=0
+    function draw() {
+      background(col);
+      if (col>0) {
+        col-=10
+      }
+      var vol = mic.getLevel()
+      var avg = 0
+      var spectrum = fft.analyze();
+      noFill()
+      stroke(255)
+      strokeWeight(3)
+      beginShape();
+      for (i = 0; i<spectrum.length; i++) {
+        avg+=spectrum[i]
+        // vertex(i, map(spectrum[i], 0, 255, height, 0) );
+      }
+      endShape();
+      if (abs(previous[0]-map(vol,0,0.1,0,width)) >= 1300 && col<50) {
+        console.log(abs(previous[0]-map(vol,0,0.1,0,width)))
+        booped(previous[1])
+        col=255
+      }
+      //map(avg/spectrum.length,0,55,0,height)
+      //map(vol,0,0.1,0,width)
+      console.log();
+      rect(map(avg/spectrum.length,0,55,0,height),150,10,10)
+      previous=[map(vol,0,0.2,0,width),map(avg/spectrum.length,0,55,0,height)]
+    }
+    function booped(x){
+      if (x>=width/2) {
+        console.log("1");
+      } else {
+        console.log("0");
+      }
+      //String.fromCharCode(parseInt("01000001",2).toString(10))
+    }
+
+    </script>
+  </body>
+</html>

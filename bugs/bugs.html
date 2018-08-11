@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="../lib/p5.js" charset="utf-8"></script>
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+bugs=[]
+move_size = 0.1
+travels = []
+doIt=true
+path=[]
+function setup() {
+  createCanvas(300,300)
+  background(100)
+  for (var i = 0; i < 4; i++) {
+    bugs[i]=[floor(i/2)*300,(i%2)*300]
+    travels[i]=0
+  }
+  temp=bugs[2]
+  bugs[2]=bugs[3]
+  bugs[3]=temp
+}
+function draw() {
+  // background(100)
+  if(doIt) {
+    for (var i = 0; i < bugs.length; i++) {
+      dir=getDirection(bugs[i],bugs[(i+1)%4])
+      if (i==0) {
+        line(bugs[i][0],bugs[i][1],bugs[(i+1)%4][0],bugs[(i+1)%4][1])
+        rect(bugs[i][0],bugs[i][1],5,5)
+      }
+      bugs[i]=[bugs[i][0]+dir[0],bugs[i][1]+dir[1]]
+      travels[i]+=move_size
+    }
+    if(dist(bugs[0][0],bugs[0][1],bugs[1][0],bugs[1][1])<0.1){
+      console.log(travels);
+      doIt=false
+    }
+  }
+}
+function getDirection(bug,bug1){
+  hypotenuse = dist(bug[0],bug[1],bug1[0],bug1[1])
+  hypotenuse_2 = move_size
+  height = bug[1]-bug1[1]
+  width = bug[0]-bug1[0]
+  k = hypotenuse_2/hypotenuse
+  x_increment = k*width
+  y_increment = k*height
+  return [-x_increment,-y_increment]
+}
+
+    </script>
+  </body>
+</html>
